@@ -1,2 +1,3 @@
-# bloomfilters
-A group project repo on the analysis of the Bloom Filter data structure
+# CS202 G1 T1
+---
+### Bloom Filters
