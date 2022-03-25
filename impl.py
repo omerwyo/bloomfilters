@@ -1,28 +1,33 @@
 import math
 import mmh3
-# import hashlib TODO: use this for MD5 or SHA256 cryptographic hashes
 from bitarray import bitarray
 
 class BloomFilter(object):
     """
     Class for Bloom filter, using murmur3 hash function
-    TODO: consider variable number of hash functions to demonstrate that more hash function = slower
+    Our implementation of a Bloom Filter can be initialised by providing num_items and p or bitarray_size and p
     """
-    def __init__(self, items_count, fp_prob):
+    def __init__(self, specify_item_count, param, fp_prob):
         """
-        items_count : int
-            Number of items expected to be stored in bloom filter
+        specify_item_count : boolean
+            A boolean to denote if the param that we pass in is n or m
+        param : int
+            Either n or m depending on if specify_item_count is True or False respectively
         fp_prob : float
             False Positive probability in decimal
         """
-        # False possible probability in decimal
         self.fp_prob = fp_prob
 
-        # Size of bit array to use
-        self.size = self.get_size(items_count, fp_prob)
+        if specify_item_count:
+            num_items = param
+            self.size = self.get_size(num_items, fp_prob)
+        else:
+            bitarray_size = param
+            self.size = bitarray_size
+            self.num_items = self.get_item_count(size, fp_prob)
 
         # number of hash functions to use
-        self.hash_count = self.get_hash_count(self.size, items_count)
+        self.hash_count = self.get_hash_count(self.size, num_items)
 
         # Bit array of given size
         self.bit_array = bitarray(self.size)
@@ -72,6 +77,20 @@ class BloomFilter(object):
         """
         m = -(n * math.log(p)) / (math.log(2) ** 2)
         return int(m)
+
+    @classmethod
+    def get_item_count(self, m, p):
+        """
+        Return the suggested item count using
+        following formula
+        n = -(m * lg(2)^2) / lg(p)
+        n : int
+            number of items expected to be stored in filter
+        p : float
+            False Positive probability in decimal
+        """
+        n = -(m * math.log(2) ** 2) / (math.log(p))
+        return int(n)
 
     @classmethod
     def get_hash_count(self, m, n):
