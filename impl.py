@@ -2,7 +2,7 @@ import math
 import mmh3
 from bitarray import bitarray
 
-class BloomFilter(object):
+class BloomFilter:
     """
     Class for Bloom filter, using murmur3 hash function
     Our implementation of a Bloom Filter can be initialised by providing num_items and p or bitarray_size and p
