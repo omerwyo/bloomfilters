@@ -19,15 +19,15 @@ class BloomFilter(object):
         self.fp_prob = fp_prob
 
         if specify_item_count:
-            num_items = param
-            self.size = self.get_size(num_items, fp_prob)
+            self.num_items = param
+            self.size = self.get_size(self.num_items, fp_prob)
         else:
             bitarray_size = param
             self.size = bitarray_size
-            self.num_items = self.get_item_count(size, fp_prob)
+            self.num_items = self.get_item_count(self.size, fp_prob)
 
         # number of hash functions to use
-        self.hash_count = self.get_hash_count(self.size, num_items)
+        self.hash_count = self.get_hash_count(self.size, self.num_items)
 
         # Bit array of given size
         self.bit_array = bitarray(self.size)

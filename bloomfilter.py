@@ -3,6 +3,8 @@ import mmh3
 # import hashlib TODO: use this for MD5 or SHA256 cryptographic hashes
 from bitarray import bitarray
 
+## G4G IMPL
+
 class BloomFilter(object):
     """
     Class for Bloom filter, using murmur3 hash function
