@@ -57,11 +57,10 @@ class BloomFilter(object):
         for i in range(self.hash_count):
             digest = mmh3.hash(item, i) % self.size
             if self.bit_array[digest] == False:
-                # if any of bit is False then,its not present
+                # if any of bit is False, its not present
                 # in filter
                 # else there is probability that it exist
                 return False
-        # TODO: if true, consider showing probability of false positive as well
         return True
 
     @classmethod
