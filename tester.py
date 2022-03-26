@@ -1,38 +1,50 @@
 from bloomfilter import BloomFilter
 from random import shuffle
 
-n = 20  # no of items to add
-p = 0.05  # false positive probability
+# Initialise a Bloom Filter, specifying that we will be passing in 
+# the number of items we'd like it to account for (13 words)
+# We also pass in a false probability of 0.05
+n = 13
+p = 0.05
 
-bloomf = BloomFilter(n, p)
-print("Size of bit array:{}".format(bloomf.size))
-print("False positive Probability:{}".format(bloomf.fp_prob))
-print("Number of hash functions:{}".format(bloomf.hash_count))
+bloomfilter = BloomFilter(specify_item_count = True, param = n, fp_prob = p)
 
-# words to be added
-word_present = ['abound', 'abounds', 'abundance', 'abundant', 'accessible',
-                'bloom', 'blossom', 'bolster', 'bonny', 'bonus', 'bonuses',
-                'coherent', 'cohesive', 'colorful', 'comely', 'comfort',
-                'gems', 'generosity', 'generous', 'generously', 'genial']
+print(f"Size of resultant bit array:{bloomfilter.size}")
+print(f"False positive Probability:{bloomfilter.fp_prob}")
+print(f"Number of hash functions:{bloomfilter.hash_count}\n")
 
-# word not added
-word_absent = ['bluff', 'cheater', 'hate', 'war', 'humanity',
-               'racism', 'hurt', 'nuke', 'gloomy', 'facebook',
-               'geeksforgeeks', 'twitter']
+# 13 words to add into the bloomfilter
+words_present = ['bonus', 'bonuses', 'coherent', 'cohesive', 'colorful', 'collaborative',
+                 'comely', 'comfort','gems', 'generosity', 'generous', 'genius', 'singapore']
 
-for item in word_present:
-    bloomf.add(item)
+# 7 words to test against
+words_absent = ['bluff', 'war', 'humanity',
+                'hurt', 'nuke', 'gloomy', 'blooming' ]
 
-shuffle(word_present)
-shuffle(word_absent)
+shuffle(words_present)
+shuffle(words_absent)
 
-test_words = word_present[:10] + word_absent
-shuffle(test_words)
-for word in test_words:
-    if bloomf.check(word):
-        if word in word_absent:
-            print("'{}' is a false positive!".format(word))
+for word in words_present:
+    bloomfilter.add(word)
+
+test_set = words_present + words_absent
+
+shuffle(test_set)
+
+fp_count, present_count, absent_count = 0, 0, 0
+
+for word in test_set:
+    if bloomfilter.check(word):
+        if word in words_absent:
+            print(f"'{word}' is a false positive", end = '\n\n')
+            fp_count+=1
         else:
-            print("'{}' is probably present!".format(word))
+            print(f"'{word}' is probably present", end = '\n\n')
+            present_count+=1
     else:
-        print("'{}' is definitely not present!".format(word))
+        print(f"'{word}' is definitely not present", end = '\n\n')
+        absent_count+=1
+        
+print(f'Number of words probably present: {present_count}')
+print(f'Number of words definitely absent: {absent_count}')
+print(f'Number of false positives: {fp_count}')
