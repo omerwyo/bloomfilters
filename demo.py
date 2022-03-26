@@ -22,5 +22,6 @@ if __name__ == '__main__':
 
     print(f'Size of set {sys.getsizeof(holder) * 8}') # sys get size returns the number of bytes an object takes up, so we divide by 8
     print(f'Size of bloomfilter {bloomfilter.size}') 
+    print(f'ratio of bloomfilter vs set 1 : {sys.getsizeof(holder) * 8 / bloomfilter.size}')
 
     
