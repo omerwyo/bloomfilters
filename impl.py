@@ -6,11 +6,14 @@ class BloomFilter:
     """
     Class for Bloom filter, using murmur3 hash function
     Our implementation of a Bloom Filter can be initialised by providing num_items and p or bitarray_size and p
+    p is the false probability
     """
-    def __init__(self, specify_item_count, param, fp_prob):
+    def __init__(self, specify_item_count: bool, param: int, fp_prob: float):
         """
-        specify_item_count : boolean
+        specify_item_count : bool
             A boolean to denote if the param that we pass in is n or m
+            True denotes n
+            False denotes m
         param : int
             Either n or m depending on if specify_item_count is True or False respectively
         fp_prob : float
@@ -22,8 +25,7 @@ class BloomFilter:
             self.num_items = param
             self.size = self.get_size(self.num_items, fp_prob)
         else:
-            bitarray_size = param
-            self.size = bitarray_size
+            self.size = param
             self.num_items = self.get_item_count(self.size, fp_prob)
 
         # number of hash functions to use
@@ -97,7 +99,6 @@ class BloomFilter:
         Return the hash function(k) to be used using
         following formula
         k = (m/n) * lg(2)
-
         m : int
             size of bit array
         n : int
