@@ -12,7 +12,7 @@ def load_usernames(filename, holder):
 
 
 if __name__ == '__main__':
-    bloomfilter = BloomFilter(specify_item_count=True, param=100000, fp_prob=0.05)
+    bloomfilter = BloomFilter(specify_item_count=True, param=160000, fp_prob=0.05)
 
     # A dataset of 160,000 Twitter usernames
     filename = 'input.txt'
