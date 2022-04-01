@@ -5,7 +5,7 @@ from bitarray import bitarray
 class BloomFilter:
     """
     Class for Bloom filter, using murmur3 hash function
-    Our implementation of a Bloom Filter can be initialised by providing num_items and p or bitarray_size and p
+    Our implementation of a Bloom Filter can be initialised by providing num_items (n) and p or bitarray_size (m) and p
     p is the false probability
     """
     def __init__(self, specify_item_count: bool, param: int, fp_prob: float):
