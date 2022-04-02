@@ -1,30 +1,42 @@
 from impl import BloomFilter
 import sys
-from random import shuffle
 import time
 
 def load_usernames(filename, holder):
     f = open(filename, 'r')
-    line = f.readline()
-    while line:
-        line = line.strip()
-        holder.add(line)
-        line = f.readline()
+    username = f.readline()
+    while username:
+        username = username.strip()
+        holder.add(username)
+        username = f.readline()
     return holder
 
 def membership_test(holder):
     f = open(filename, 'r')
-    start = time.time()
-    line = f.readline()
-    while line:
-        line = line.strip()
-        if isinstance(holder, BloomFilter): holder.check(line)
-        if isinstance(holder, set): line in holder
-        line = f.readline()
-    end = time.time()
+    list_ = [None for _ in range(160000)]
+    i = 0
+    username = f.readline()
+    while username:
+        username = username.strip()
+        list_[i] = username
+        username = f.readline()
+        i+=1
 
+    start = time.time()
+    for username in list_:
+        if isinstance(holder, BloomFilter): 
+            if holder.check(username): pass
+        if isinstance(holder, set): 
+            if username in holder: pass
+    end = time.time()
     avg_time_taken = 1000000000 * (end - start) / 160000
-    return avg_time_taken
+    return avg_time_taken 
+
+
+
+
+
+
 
 if __name__ == '__main__':
     p = 0.05
@@ -36,14 +48,12 @@ if __name__ == '__main__':
     filename = 'input.txt'
 
     bloomfilter = load_usernames(filename, bloomfilter)
-
-    # We conduct our empirical analysis vs a python set
     set_ = load_usernames(filename, set())
 
-    # Compare the sizes
-    print(f'Size of Set: {sys.getsizeof(set_) * 8} bits') # sys get size returns the number of bytes an object takes up, so we divide by 8
-    print(f'Size of BloomFilter {bloomfilter.size} bits') 
-    print(f'The Set takes up {(sys.getsizeof(set_) * 8 / bloomfilter.size):.3f} times more space than the BloomFilter')
+    # # Compare the sizes
+    # print(f'Size of Set: {sys.getsizeof(set_) / 1000000} bytes') # sys get size returns the number of bytes an object takes up, so we divide by 8
+    # print(f'Size of BloomFilter {bloomfilter.size / (8 * 1000000)} bytes') 
+    # print(f'The Set takes up {(sys.getsizeof(set_) * 8 / bloomfilter.size):.3f} times more space than the BloomFilter')
 
     time_bloom = membership_test(bloomfilter)
     time_set = membership_test(set_)
