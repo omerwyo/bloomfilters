@@ -1,5 +1,7 @@
 from impl import BloomFilter
 import sys
+from random import shuffle
+import time
 
 def load_usernames(filename, holder):
     f = open(filename, 'r')
@@ -10,10 +12,25 @@ def load_usernames(filename, holder):
         line = f.readline()
     return holder
 
+def membership_test(holder):
+    f = open(filename, 'r')
+    start = time.time()
+    line = f.readline()
+    while line:
+        line = line.strip()
+        if isinstance(holder, BloomFilter): holder.check(line)
+        if isinstance(holder, set): line in holder
+        line = f.readline()
+    end = time.time()
+
+    avg_time_taken = 1000000000 * (end - start) / 160000
+    return avg_time_taken
 
 if __name__ == '__main__':
-    p = 1/10000
+    p = 0.05
     bloomfilter = BloomFilter(specify_item_count = True, param = 160000, fp_prob = p)
+
+    print(bloomfilter.hash_count)
 
     # A dataset of 160,000 Twitter usernames
     filename = 'input.txt'
@@ -21,11 +38,17 @@ if __name__ == '__main__':
     bloomfilter = load_usernames(filename, bloomfilter)
 
     # We conduct our empirical analysis vs a python set
-    holder = load_usernames(filename, set())
+    set_ = load_usernames(filename, set())
 
     # Compare the sizes
-    print(f'Size of Set: {sys.getsizeof(holder) * 8} bits') # sys get size returns the number of bytes an object takes up, so we divide by 8
+    print(f'Size of Set: {sys.getsizeof(set_) * 8} bits') # sys get size returns the number of bytes an object takes up, so we divide by 8
     print(f'Size of BloomFilter {bloomfilter.size} bits') 
-    print(f'The Set takes up {(sys.getsizeof(holder) * 8 / bloomfilter.size):.3f} times more space than the BloomFilter')
+    print(f'The Set takes up {(sys.getsizeof(set_) * 8 / bloomfilter.size):.3f} times more space than the BloomFilter')
+
+    time_bloom = membership_test(bloomfilter)
+    time_set = membership_test(set_)
+    print(f'Average time taken to test membership for BloomFilter: {time_bloom:.2f}ns')
+    print(f'Average time taken to test membership for set: {time_set:.2f}ns')
+    print(f'Testing membership in set is {(time_bloom / time_set):.3f} times faster than bloomfilter')
 
     
