@@ -3,12 +3,14 @@ import mmh3
 from bitarray import bitarray
 from random import shuffle
 
+
 class BloomFilter:
     """
     Class for Bloom filter, using murmur3 hash function
     Our implementation of a Bloom Filter can be initialised by providing num_items and p or bitarray_size and p
     p is the false probability
     """
+
     def __init__(self, specify_item_count: bool, param: int, fp_prob: float):
         """
         specify_item_count : bool
@@ -108,6 +110,7 @@ class BloomFilter:
         k = (m / n) * math.log(2)
         return int(k)
 
+
 if __name__ == '__main__':
     # Initialise a Bloom Filter, specifying that we will be passing in 
     # the number of items we'd like it to account for (13 words)
@@ -115,7 +118,7 @@ if __name__ == '__main__':
     n = 13
     p = 0.05
 
-    bloomfilter = BloomFilter(specify_item_count = True, param = n, fp_prob = p)
+    bloomfilter = BloomFilter(specify_item_count=True, param=n, fp_prob=p)
 
     print(f"Size of resultant bit array:{bloomfilter.size}")
     print(f"False positive Probability:{bloomfilter.fp_prob}")
@@ -123,11 +126,11 @@ if __name__ == '__main__':
 
     # 13 words to add into the bloomfilter
     words_present = ['bonus', 'bonuses', 'coherent', 'cohesive', 'colorful', 'collaborative',
-                     'comely', 'comfort','gems', 'generosity', 'generous', 'genius', 'singapore']
+                     'comely', 'comfort', 'gems', 'generosity', 'generous', 'genius', 'singapore']
 
     # 7 words to test against
     words_absent = ['bluff', 'war', 'humanity',
-                    'hurt', 'nuke', 'gloomy', 'blooming' ]
+                    'hurt', 'nuke', 'gloomy', 'blooming']
 
     shuffle(words_present)
     shuffle(words_absent)
@@ -144,15 +147,15 @@ if __name__ == '__main__':
     for word in test_set:
         if bloomfilter.check(word):
             if word in words_absent:
-                print(f"'{word}' is a false positive", end = '\n\n')
-                fp_count+=1
+                print(f"'{word}' is a false positive", end='\n\n')
+                fp_count += 1
             else:
-                print(f"'{word}' is probably present", end = '\n\n')
-                present_count+=1
+                print(f"'{word}' is probably present", end='\n\n')
+                present_count += 1
         else:
-            print(f"'{word}' is definitely not present", end = '\n\n')
-            absent_count+=1
-            
+            print(f"'{word}' is definitely not present", end='\n\n')
+            absent_count += 1
+
     print(f'Number of words probably present: {present_count}')
     print(f'Number of words definitely absent: {absent_count}')
     print(f'Number of false positives: {fp_count}')
