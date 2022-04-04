@@ -1,5 +1,7 @@
-from impl import BloomFilter
+from main import BloomFilter
+import sys
 import time
+# Only used for our presentation in conjunction with input.txt
 
 
 def load_usernames(filename, holder):

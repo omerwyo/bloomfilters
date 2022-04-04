@@ -2,6 +2,7 @@ import math
 import mmh3
 from bitarray import bitarray
 from random import shuffle
+# Submission for Bloom Filter implementation
 
 
 class BloomFilter:
