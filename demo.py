@@ -39,7 +39,7 @@ def membership_test(holder):
 
 
 if __name__ == '__main__':
-    p = 0.05
+    p = 1/1000
     bloomfilter = BloomFilter(specify_item_count = True, param = 160000, fp_prob = p)
 
     print(bloomfilter.hash_count)
@@ -50,10 +50,10 @@ if __name__ == '__main__':
     bloomfilter = load_usernames(filename, bloomfilter)
     set_ = load_usernames(filename, set())
 
-    # # Compare the sizes
-    # print(f'Size of Set: {sys.getsizeof(set_) / 1000000} bytes') # sys get size returns the number of bytes an object takes up, so we divide by 8
-    # print(f'Size of BloomFilter {bloomfilter.size / (8 * 1000000)} bytes') 
-    # print(f'The Set takes up {(sys.getsizeof(set_) * 8 / bloomfilter.size):.3f} times more space than the BloomFilter')
+    # Compare the sizes
+    print(f'Size of Set: {sys.getsizeof(set_) / 1000000} bytes') # sys get size returns the number of bytes an object takes up, so we divide by 8
+    print(f'Size of BloomFilter {bloomfilter.size / (8 * 1000000)} bytes') 
+    print(f'The Set takes up {(sys.getsizeof(set_) * 8 / bloomfilter.size):.3f} times more space than the BloomFilter')
 
     time_bloom = membership_test(bloomfilter)
     time_set = membership_test(set_)
